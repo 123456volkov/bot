@@ -5,7 +5,8 @@ import com.google.gson.JsonObject;
 /**
  * Created by Александр on 30.05.2018.
  */
-//jsonObject.get("result").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsJsonObject().get("text").toString();
+
+// Клас дял получения отдельных значений JSON-объекта сообщения
 
 public abstract class GetDataFrom_JSONMessage {
 
@@ -63,5 +64,22 @@ public abstract class GetDataFrom_JSONMessage {
 
     public static String getResult_text(JsonObject jsonObject){
         return jsonObject.get("result").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsJsonObject().get("text").toString();
+    }
+
+    public static void printJSONMessage(JsonObject jsonObject){
+        System.out.println("Ok: " + GetDataFrom_JSONMessage.getOK(jsonObject)+ "\n" +
+                "Result_update_id " + GetDataFrom_JSONMessage.getResult_update_id(jsonObject) + "\n" +
+                "Result_message_id: " + GetDataFrom_JSONMessage.getResult_message_message_id(jsonObject) + "\n" +
+                "Result_message_message_id: " + GetDataFrom_JSONMessage.getResult_message_from_id(jsonObject) + "\n" +
+                "Result_message_from_is_bot: " + GetDataFrom_JSONMessage.getResult_message_from_is_bot(jsonObject)+ "\n" +
+                "Result_message_from_first_name: " + GetDataFrom_JSONMessage.getResult_message_from_first_name(jsonObject) + "\n" +
+                "Result_message_from_username: " + GetDataFrom_JSONMessage.getResult_message_from_username(jsonObject) + "\n" +
+                "Result_message_from_language_code: " + GetDataFrom_JSONMessage.getResult_message_from_language_code(jsonObject) + "\n" +
+                "Result_chat_id: " + GetDataFrom_JSONMessage.getResult_chat_id(jsonObject) + "\n" +
+                "Result_chat_first_name: " + GetDataFrom_JSONMessage.getResult_chat_first_name(jsonObject) + "\n" +
+                "Result_chat_username: " + GetDataFrom_JSONMessage.getResult_chat_username(jsonObject) + "\n" +
+                "Result_chat_type: " + GetDataFrom_JSONMessage.getResult_chat_type(jsonObject) + "\n" +
+                "Result_date: " + GetDataFrom_JSONMessage.getResult_date(jsonObject) + "\n" +
+                "Result_text: " + GetDataFrom_JSONMessage.getResult_text(jsonObject));
     }
 }

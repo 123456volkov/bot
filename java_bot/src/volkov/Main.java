@@ -2,7 +2,16 @@ package volkov;
 
 import com.google.gson.*;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import  java.net.HttpURLConnection;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
 
@@ -10,35 +19,43 @@ public class Main {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        String token = "619767740:AAFb1IfAsmRQJ_WKO0CbbhQJyvXHdtH36LM";
 
+        // Считываем токен из файла
+        BufferedReader reader = null;
+        StringBuilder TOKEN = new StringBuilder();
+
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream("D:\\token.txt"), Charset.forName("UTF-8")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                TOKEN.append(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Ошибка чтения файла! (возможно удален или переименован или перенесен)");
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    System.out.println("Ошибка чтения фала!");
+                }
+            }
+        }
+
+        String token = TOKEN.toString();
         HttpURLConnection connection = null;
         GetUpdates getUpdates = new GetUpdates(connection, token); // Обьект для создания запросов на сервер Telegram
 
         try {
 
             String lastMessage = getUpdates.getLastMessage(); //  Получаем последнее смс
-            //System.out.println(lastMessage);
-            JsonObject jsonObject = (JsonObject) new JsonParser().parse(lastMessage); // Преобразуем в JSON-объект
-            System.out.println(jsonObject.toString());
-
-            System.out.println(GetDataFrom_JSONMessage.getOK(jsonObject)+ " " +
-                    GetDataFrom_JSONMessage.getResult_update_id(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_message_message_id(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_message_from_id(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_message_from_is_bot(jsonObject)+ " " +
-                    GetDataFrom_JSONMessage.getResult_message_from_first_name(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_message_from_username(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_message_from_language_code(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_chat_id(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_chat_id(jsonObject)  + " " +
-                    GetDataFrom_JSONMessage.getResult_chat_first_name(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_chat_username(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_chat_type(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_date(jsonObject) + " " +
-                    GetDataFrom_JSONMessage.getResult_text(jsonObject));
+            JsonObject jsonMessage = (JsonObject) new JsonParser().parse(lastMessage); // Преобразуем в JSON-объект
+            System.out.println(jsonMessage.toString());
+            GetDataFrom_JSONMessage.printJSONMessage(jsonMessage);
 
         } catch (Throwable cause) {
             cause.printStackTrace();
