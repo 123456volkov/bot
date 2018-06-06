@@ -16,5 +16,8 @@ def echo_all(message):
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 	bot.reply_to(message, (translator.translate(message.text, dest='ru')).text)
-	
-bot.polling()
+
+try:	
+	bot.polling()
+except socket.timeout:
+	bot.polling()
