@@ -1,10 +1,16 @@
 import telebot
 import misc
+from googletrans import Translator
 
-bot = telebot.TeleBot(misc.token);
+translator = Translator()
+bot = telebot.TeleBot(misc.token)
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
 	bot.reply_to(message, "Hey, I'm your english teacher")
+	
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+	bot.reply_to(message, (translator.translate(message.text, dest='ru')).text)
 	
 bot.polling()
